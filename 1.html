@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>索晗 & 龚翰文 | 我们的甜蜜时光</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;600&family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <style>
+        :root {
+            --primary-pink: #ffb7c5;
+            --deep-rose: #e75480;
+            --soft-gold: #f4e4c1;
+            --warm-white: #faf7f2;
+        }
+        
+        body {
+            font-family: 'Noto Serif SC', serif;
+            background-color: var(--warm-white);
+            overflow-x: hidden;
+        }
+        
+        .handwriting {
+            font-family: 'Ma Shan Zheng', cursive;
+        }
+        
+        /* 浮动心形动画 */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
+        }
+        
+        .floating-heart {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        .floating-heart:nth-child(2n) {
+            animation-delay: 1s;
+            animation-duration: 7s;
+        }
+        
+        .floating-heart:nth-child(3n) {
+            animation-delay: 2s;
+            animation-duration: 5s;
+        }
+        
+        /* 时间轴样式 */
+        .timeline-line {
+            background: linear-gradient(to bottom, var(--primary-pink), var(--deep-rose));
+        }
+        
+        .timeline-dot {
+            box-shadow: 0 0 0 4px var(--warm-white), 0 0 0 6px var(--primary-pink);
+        }
+        
+        /* 卡片悬停效果 */
+        .memory-card {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .memory-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px -10px rgba(231, 84, 128, 0.2);
+        }
+        
+        /* 甜蜜台词打字机效果 */
+        .typewriter {
+            overflow: hidden;
+            border-right: 2px solid var(--deep-rose);
+            white-space: nowrap;
+            animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
+        }
+        
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+        
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: var(--deep-rose); }
+        }
+        
+        /* 照片框效果 */
+        .polaroid {
+            background: white;
+            padding: 12px 12px 40px 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transform: rotate(-2deg);
+            transition: transform 0.3s ease;
+        }
+        
+        .polaroid:hover {
+            transform: rotate(0deg) scale(1.05);
+        }
+        
+        .polaroid:nth-child(even) {
+            transform: rotate(2deg);
+        }
+        
+        .polaroid:nth-child(even):hover {
+            transform: rotate(0deg) scale(1.05);
+        }
+        
+        /* 背景渐变 */
+        .gradient-bg {
+            background: linear-gradient(135deg, #ffeef2 0%, #ffe4e1 50%, #fff0f5 100%);
+        }
+        
+        /* 闪烁星星 */
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+        
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 3s infinite;
+        }
+        
+        /* 按钮脉冲 */
+        @keyframes pulse-heart {
+            0% { box-shadow: 0 0 0 0 rgba(231, 84, 128, 0.4); }
+            70% { box-shadow: 0 0 0 20px rgba(231, 84, 128, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(231, 84, 128, 0); }
+        }
+        
+        .btn-pulse {
+            animation: pulse-heart 2s infinite;
+        }
+        
+        /* 响应式文字 */
+        .responsive-text {
+            font-size: clamp(1rem, 2.5vw, 1.25rem);
+        }
+        
+        .title-text {
+            font-size: clamp(2.5rem, 8vw, 5rem);
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <!-- 浮动装饰心形 -->
+    <div class="fixed inset-0 pointer-events-none overflow-hidden z-0">
+        <div class="floating-heart absolute top-20 left-10 text-pink-200 opacity-60 text-6xl">❤</div>
+        <div class="floating-heart absolute top-40 right-20 text-pink-300 opacity-40 text-4xl">❤</div>
+        <div class="floating-heart absolute bottom-40 left-1/4 text-pink-200 opacity-50 text-5xl">❤</div>
+        <div class="floating-heart absolute top-1/3 right-10 text-pink-100 opacity-70 text-3xl">❤</div>
+        <div class="floating-heart absolute bottom-20 right-1/3 text-pink-300 opacity-40 text-6xl">❤</div>
+    </div>
+
+    <!-- 导航 -->
+    <nav class="fixed w-full z-50 transition-all duration-300" id="navbar">
+        <div class="max-w-6xl mx-auto px-6 py-4">
+            <div class="flex justify-between items-center">
+                <div class="handwriting text-2xl text-rose-600 font-bold tracking-wider">
+                    S & G <span class="text-sm font-serif text-gray-600 ml-2">Since 202X</span>
+                </div>
+                <div class="hidden md:flex space-x-8 text-sm tracking-widest">
+                    <a href="#home" class="hover:text-rose-600 transition-colors">首页</a>
+                    <a href="#timeline" class="hover:text-rose-600 transition-colors">时光轴</a>
+                    <a href="#quotes" class="hover:text-rose-600 transition-colors">蜜语</a>
+                    <a href="#gallery" class="hover:text-rose-600 transition-colors">相册</a>
+                </div>
+                <button class="md:hidden text-rose-600" onclick="toggleMenu()">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 移动端菜单 -->
+    <div id="mobile-menu" class="fixed inset-0 bg-white/95 z-40 hidden flex-col items-center justify-center space-y-8 text-xl">
+        <a href="#home" onclick="toggleMenu()" class="hover:text-rose-600">首页</a>
+        <a href="#timeline" onclick="toggleMenu()" class="hover:text-rose-600">时光轴</a>
+        <a href="#quotes" onclick="toggleMenu()" class="hover:text-rose-600">蜜语</a>
+        <a href="#gallery" onclick="toggleMenu()" class="hover:text-rose-600">相册</a>
+    </div>
+
+    <!-- Hero Section -->
+    <section id="home" class="relative min-h-screen flex items-center justify-center gradient-bg overflow-hidden">
+        <div class="absolute inset-0 opacity-30">
+            <div class="star w-1 h-1 top-20 left-1/4"></div>
+            <div class="star w-2 h-2 top-40 right-1/3"></div>
+            <div class="star w-1 h-1 top-60 left-1/2"></div>
+            <div class="star w-2 h-2 bottom-40 left-1/3"></div>
+            <div class="star w-1 h-1 bottom-20 right-1/4"></div>
+        </div>
+        
+        <div class="relative z-10 text-center px-6 max-w-4xl mx-auto">
+            <div class="mb-6 inline-block">
+                <span class="handwriting text-3xl md:text-4xl text-rose-500 block mb-2 opacity-0" id="subtitle">我们的故事</span>
+            </div>
+            <h1 class="title-text font-bold text-gray-800 mb-6 leading-tight opacity-0" id="main-title">
+                索晗 <span class="text-rose-500 mx-2 md:mx-4">&</span> 龚翰文
+            </h1>
+            <div class="h-12 mb-8">
+                <p class="responsive-text text-gray-600 italic opacity-0" id="typewriter-text"></p>
+            </div>
+            <div class="flex justify-center gap-4 opacity-0" id="hero-buttons">
+                <button onclick="scrollToSection('timeline')" class="btn-pulse bg-rose-500 text-white px-8 py-3 rounded-full hover:bg-rose-600 transition-all transform hover:scale-105 shadow-lg">
+                    探索我们的时光
+                </button>
+                <button onclick="addMemory()" class="border-2 border-rose-500 text-rose-500 px-8 py-3 rounded-full hover:bg-rose-50 transition-all">
+                    添加甜蜜瞬间
+                </button>
+            </div>
+            
+            <div class="mt-16 flex justify-center space-x-8 opacity-0" id="stats">
+                <div class="text-center">
+                    <div class="handwriting text-4xl text-rose-500" id="days-count">0</div>
+                    <div class="text-sm text-gray-500 mt-1">相爱天数</div>
+                </div>
+                <div class="w-px bg-gray-300"></div>
+                <div class="text-center">
+                    <div class="handwriting text-4xl text-rose-500">∞</div>
+                    <div class="text-sm text-gray-500 mt-1">未来可期</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce">
+            <svg class="w-6 h-6 text-rose-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
+        </div>
+    </section>
+
+    <!-- 时间轴 Section -->
+    <section id="timeline" class="py-24 relative bg-white">
+        <div class="max-w-4xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="handwriting text-5xl text-gray-800 mb-4">甜蜜时光轴</h2>
+                <p class="text-gray-500 italic">每一个瞬间，都是永恒的印记</p>
+            </div>
+            
+            <div class="relative">
+                <!-- 时间线 -->
+                <div class="absolute left-1/2 transform -translate-x-1/2 w-1 h-full timeline-line rounded-full hidden md:block"></div>
+                
+                <!-- 记忆项目 -->
+                <div class="space-y-12" id="timeline-container">
+                    <!-- 项目1 -->
+                    <div class="timeline-item flex flex-col md:flex-row items-center opacity-0 translate-y-10">
+                        <div class="w-full md:w-1/2 md:pr-12 md:text-right mb-4 md:mb-0">
+                            <div class="memory-card bg-white p-6 rounded-2xl shadow-lg border border-pink-100 inline-block">
+                                <span class="text-rose-500 text-sm font-bold tracking-wider">2023.05.20</span>
+                                <h3 class="text-xl font-bold mt-2 mb-2">初次相遇</h3>
+                                <p class="text-gray-600 text-sm leading-relaxed">在那个阳光正好的午后，你的笑容比阳光更耀眼。从那一刻起，我的世界开始有了不同的色彩。</p>
+                            </div>
+                        </div>
+                        <div class="timeline-dot w-4 h-4 bg-rose-500 rounded-full relative z-10 hidden md:block"></div>
+                        <div class="w-full md:w-1/2 md:pl-12 hidden md:block"></div>
+                    </div>
+                    
+                    <!-- 项目2 -->
+                    <div class="timeline-item flex flex-col md:flex-row items-center opacity-0 translate-y-10">
+                        <div class="w-full md:w-1/2 md:pr-12 hidden md:block"></div>
+                        <div class="timeline-dot w-4 h-4 bg-rose-500 rounded-full relative z-10 hidden md:block"></div>
+                        <div class="w-full md:w-1/2 md:pl-12 mb-4 md:mb-0">
+                            <div class="memory-card bg-white p-6 rounded-2xl shadow-lg border border-pink-100 inline-block">
+                                <span class="text-rose-500 text-sm font-bold tracking-wider">2023.08.07</span>
+                                <h3 class="text-xl font-bold mt-2 mb-2">第一次旅行</h3>
+                                <p class="text-gray-600 text-sm leading-relaxed">手牵手走过陌生的街道，每一处风景都因为有你在身边而变得格外美丽。</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 项目3 -->
+                    <div class="timeline-item flex flex-col md:flex-row items-center opacity-0 translate-y-10">
+                        <div class="w-full md:w-1/2 md:pr-12 md:text-right mb-4 md:mb-0">
+                            <div class="memory-card bg-white p-6 rounded-2xl shadow-lg border border-pink-100 inline-block">
+                                <span class="text-rose-500 text-sm font-bold tracking-wider">2024.02.14</span>
+                                <h3 class="text-xl font-bold mt-2 mb-2">第一个情人节</h3>
+                                <p class="text-gray-600 text-sm leading-relaxed">不需要华丽的礼物，只要有你准备的惊喜和那句"我爱你"，就是最完美的节日。</p>
+                            </div>
+                        </div>
+                        <div class="timeline-dot w-4 h-4 bg-rose-500 rounded-full relative z-10 hidden md:block"></div>
+                        <div class="w-full md:w-1/2 md:pl-12 hidden md:block"></div>
+                    </div>
+                    
+                    <!-- 项目4 -->
+                    <div class="timeline-item flex flex-col md:flex-row items-center opacity-0 translate-y-10">
+                        <div class="w-full md:w-1/2 md:pr-12 hidden md:block"></div>
+                        <div class="timeline-dot w-4 h-4 bg-rose-500 rounded-full relative z-10 hidden md:block"></div>
+                        <div class="w-full md:w-1/2 md:pl-12 mb-4 md:mb-0">
+                            <div class="memory-card bg-white p-6 rounded-2xl shadow-lg border border-pink-100 inline-block">
+                                <span class="text-rose-500 text-sm font-bold tracking-wider">2024.12.31</span>
+                                <h3 class="text-xl font-bold mt-2 mb-2">跨年之约</h3>
+                                <p class="text-gray-600 text-sm leading-relaxed">在烟花绽放的那一刻许下心愿：新的一年，依然要牵着你的手，一起走过春夏秋冬。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 甜蜜台词 Section -->
+    <section id="quotes" class="py-24 bg-gradient-to-br from-pink-50 to-rose-50 relative overflow-hidden">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="handwriting text-5xl text-gray-800 mb-4">爱的蜜语</h2>
+                <p class="text-gray-500 italic">每一句话，都是心跳的证明</p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8" id="quotes-container">
+                <!-- 台词卡片1 -->
+                <div class="quote-card group relative bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 cursor-pointer" onclick="flipCard(this)">
+                    <div class="absolute -top-4 -right-4 w-12 h-12 bg-rose-500 rounded-full flex items-center justify-center text-white text-2xl shadow-lg group-hover:scale-110 transition-transform">"</div>
+                    <div class="card-front">
+                        <p class="text-lg text-gray-700 leading-relaxed mb-4 font-serif">"遇见你之前，我没想过结婚；遇见你之后，结婚我没想过别人。"</p>
+                        <div class="flex items-center justify-between mt-6">
+                            <span class="text-sm text-rose-500 font-bold">—— 索晗 to 龚翰文</span>
+                            <span class="text-xs text-gray-400">点击翻转</span>
+                        </div>
+                    </div>
+                    <div class="card-back hidden absolute inset-0 bg-rose-500 rounded-2xl p-8 flex items-center justify-center text-white">
+                        <p class="text-center text-lg">这是我最认真的承诺 ❤</p>
+                    </div>
+                </div>
+                
+                <!-- 台词卡片2 -->
+                <div class="quote-card group relative bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 cursor-pointer" onclick="flipCard(this)">
+                    <div class="absolute -top-4 -right-4 w-12 h-12 bg-rose-500 rounded-full flex items-center justify-center text-white text-2xl shadow-lg group-hover:scale-110 transition-transform">"</div>
+                    <div class="card-front">
+                        <p class="text-lg text-gray-700 leading-relaxed mb-4 font-serif">"每天早上醒来，看到你和阳光都在，这就是我想要的未来。"</p>
+                        <div class="flex items-center justify-between mt-6">
+                            <span class="text-sm text-rose-500 font-bold">—— 龚翰文 to 索晗</span>
+                            <span class="text-xs text-gray-400">点击翻转</span>
+                        </div>
+                    </div>
+                    <div class="card-back hidden absolute inset-0 bg-rose-500 rounded-2xl p-8 flex items-center justify-center text-white">
+                        <p class="text-center text-lg">早安，我的全世界 ☀</p>
+                    </div>
+                </div>
+                
+                <!-- 台词卡片3 -->
+                <div class="quote-card group relative bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 cursor-pointer" onclick="flipCard(this)">
+                    <div class="absolute -top-4 -right-4 w-12 h-12 bg-rose-500 rounded-full flex items-center justify-center text-white text-2xl shadow-lg group-hover:scale-110 transition-transform">"</div>
+                    <div class="card-front">
+                        <p class="text-lg text-gray-700 leading-relaxed mb-4 font-serif">"我不需要诗和远方，只要你和明天。"</p>
+                        <div class="flex items-center justify-between mt-6">
+                            <span class="text-sm text-rose-500 font-bold">—— 共同的心愿</span>
+                            <span class="text-xs text-gray-400">点击翻转</span>
+                        </div>
+                    </div>
+                    <div class="card-back hidden absolute inset-0 bg-rose-500 rounded-2xl p-8 flex items-center justify-center text-white">
+                        <p class="text-center text-lg">一起慢慢变老 👴👵</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 添加新台词 -->
+            <div class="mt-12 text-center">
+                <button onclick="addQuote()" class="inline-flex items-center gap-2 bg-white text-rose-500 px-6 py-3 rounded-full shadow-md hover:shadow-lg transition-all border border-rose-200">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                    添加新的甜蜜台词
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- 相册 Section -->
+    <section id="gallery" class="py-24 bg-white">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="handwriting text-5xl text-gray-800 mb-4">幸福相册</h2>
+                <p class="text-gray-500 italic">定格每一个微笑的瞬间</p>
+            </div>
+            
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6" id="gallery-container">
+                <div class="polaroid aspect-square bg-gray-100 rounded-lg overflow-hidden cursor-pointer" onclick="enlargeImage(this)">
+                    <div class="w-full h-full bg-gradient-to-br from-pink-200 to-rose-200 flex items-center justify-center text-white text-4xl">
+                        📷
+                    </div>
+                    <div class="absolute bottom-2 left-0 right-0 text-center handwriting text-gray-600">我们的第一张合照</div>
+                </div>
+                
+                <div class="polaroid aspect-square bg-gray-100 rounded-lg overflow-hidden cursor-pointer" onclick="enlargeImage(this)">
+                    <div class="w-full h-full bg-gradient-to-br from-purple-200 to-pink-200 flex items-center justify-center text-white text-4xl">
+                        🌸
+                    </div>
+                    <div class="absolute bottom-2 left-0 right-0 text-center handwriting text-gray-600">樱花树下的约定</div>
+                </div>
+                
+                <div class="polaroid aspect-square bg-gray-100 rounded-lg overflow-hidden cursor-pointer" onclick="enlargeImage(this)">
+                    <div class="w-full h-full bg-gradient-to-br from-blue-200 to-purple-200 flex items-center justify-center text-white text-4xl">
+                        🌊
+                    </div>
+                    <div class="absolute bottom-2 left-0 right-0 text-center handwriting text-gray-600">海边的日落</div>
+                </div>
+                
+                <div class="polaroid aspect-square bg-gray-100 rounded-lg overflow-hidden cursor-pointer" onclick="enlargeImage(this)">
+                    <div class="w-full h-full bg-gradient-to-br from-yellow-200 to-orange-200 flex items-center justify-center text-white text-4xl">
+                        ☕
+                    </div>
+                    <div class="absolute bottom-2 left-0 right-0 text-center handwriting text-gray-600">周末的下午茶</div>
+                </div>
+            </div>
+            
+            <div class="mt-12 text-center">
+                <p class="text-gray-400 text-sm mb-4">* 点击照片可以查看大图效果</p>
+                <button onclick="addPhoto()" class="bg-rose-500 text-white px-8 py-3 rounded-full hover:bg-rose-600 transition-all shadow-lg">
+                    上传新照片
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12 relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10">
+            <div class="floating-heart absolute top-10 left-10 text-6xl">❤</div>
+            <div class="floating-heart absolute bottom-10 right-10 text-4xl">❤</div>
+        </div>
+        
+        <div class="max-w-4xl mx-auto px-6 text-center relative z-10">
+            <div class="handwriting text-4xl mb-4 text-rose-400">索晗 & 龚翰文</div>
+            <p class="text-gray-400 mb-6">愿有岁月可回首，且以深情共白头</p>
+            <div class="flex justify-center space-x-6 mb-8">
+                <button onclick="showLove()" class="w-12 h-12 rounded-full bg-rose-500 hover:bg-rose-600 flex items-center justify-center transition-all transform hover:scale-110" title="发送爱心">
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"></path></svg>
+                </button>
+            </div>
+            <p class="text-gray-600 text-sm">Made with ❤ for 索晗 & 龚翰文</p>
+        </div>
+    </footer>
+
+    <!-- 图片放大Modal -->
+    <div id="imageModal" class="fixed inset-0 bg-black/90 z-50 hidden flex items-center justify-center p-4" onclick="closeModal()">
+        <div class="max-w-4xl w-full bg-white rounded-lg overflow-hidden transform scale-95 transition-transform" onclick="event.stopPropagation()">
+            <div class="aspect-video bg-gray-100 flex items-center justify-center text-6xl" id="modalContent">
+                🖼️
+            </div>
+            <div class="p-6 text-center">
+                <p class="text-gray-600" id="modalCaption">照片描述</p>
+                <button onclick="closeModal()" class="mt-4 text-rose-500 hover:text-rose-600">关闭</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 初始化GSAP
+        gsap.registerPlugin(ScrollTrigger);
+        
+        // 页面加载动画
+        window.addEventListener('load', () => {
+            // 标题动画
+            gsap.to("#subtitle", { opacity: 1, y: 0, duration: 1, delay: 0.2 });
+            gsap.to("#main-title", { opacity: 1, y: 0, duration: 1, delay: 0.5 });
+            gsap.to("#hero-buttons", { opacity: 1, y: 0, duration: 1, delay: 0.8 });
+            gsap.to("#stats", { opacity: 1, y: 0, duration: 1, delay: 1 });
+            
+            // 打字机效果
+            const text = "在千万人之中，遇见你所遇见的人；于千万年之中，时间的无涯荒野里，没有早一步，也没有晚一步。";
+            typeWriter(text, "typewriter-text");
+            
+            // 计算相爱天数（示例：从2023年5月20日开始）
+            const startDate = new Date('2023-05-20');
+            const today = new Date();
+            const diffTime = Math.abs(today - startDate);
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            
+            // 数字滚动动画
+            animateValue("days-count", 0, diffDays, 2000);
+        });
+        
+        // 打字机函数
+        function typeWriter(text, elementId, speed = 100) {
+            let i = 0;
+            const element = document.getElementById(elementId);
+            element.style.opacity = 1;
+            
+            function type() {
+                if (i < text.length) {
+                    element.innerHTML += text.charAt(i);
+                    i++;
+                    setTimeout(type, speed);
+                }
+            }
+            type();
+        }
+        
+        // 数字动画
+        function animateValue(id, start, end, duration) {
+            const obj = document.getElementById(id);
+            const range = end - start;
+            const minTimer = 50;
+            let stepTime = Math.abs(Math.floor(duration / range));
+            stepTime = Math.max(stepTime, minTimer);
+            let startTime = new Date().getTime();
+            let endTime = startTime + duration;
+            let timer;
+            
+            function run() {
+                let now = new Date().getTime();
+                let remaining = Math.max((endTime - now) / duration, 0);
+                let value = Math.round(end - (remaining * range));
+                obj.innerHTML = value;
+                if (value == end) {
+                    clearInterval(timer);
+                }
+            }
+            
+            timer = setInterval(run, stepTime);
+            run();
+        }
+        
+        // 时间轴滚动动画
+        gsap.utils.toArray('.timeline-item').forEach((item, i) => {
+            gsap.to(item, {
+                scrollTrigger: {
+                    trigger: item,
+                    start: "top 80%",
+                    toggleActions: "play none none reverse"
+                },
+                opacity: 1,
+                y: 0,
+                duration: 0.8,
+                delay: i * 0.2
+            });
+        });
+        
+        // 导航栏滚动效果
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('bg-white/90', 'backdrop-blur-md', 'shadow-sm');
+            } else {
+                navbar.classList.remove('bg-white/90', 'backdrop-blur-md', 'shadow-sm');
+            }
+        });
+        
+        // 平滑滚动
+        function scrollToSection(id) {
+            document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        // 移动端菜单切换
+        function toggleMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+            menu.classList.toggle('flex');
+        }
+        
+        // 卡片翻转
+        function flipCard(card) {
+            const front = card.querySelector('.card-front');
+            const back = card.querySelector('.card-back');
+            
+            if (back.classList.contains('hidden')) {
+                front.classList.add('hidden');
+                back.classList.remove('hidden');
+                gsap.from(back, { rotationY: 90, duration: 0.3 });
+            } else {
+                back.classList.add('hidden');
+                front.classList.remove('hidden');
+                gsap.from(front, { rotationY: -90, duration: 0.3 });
+            }
+        }
+        
+        // 添加新记忆（示例功能）
+        function addMemory() {
+            const date = prompt("请输入日期（格式：YYYY.MM.DD）：");
+            const title = prompt("请输入标题：");
+            const content = prompt("请输入内容：");
+            
+            if (date && title && content) {
+                const container = document.getElementById('timeline-container');
+                const newItem = document.createElement('div');
+                newItem.className = 'timeline-item flex flex-col md:flex-row items-center opacity-0 translate-y-10';
+                newItem.innerHTML = `
+                    <div class="w-full md:w-1/2 md:pr-12 md:text-right mb-4 md:mb-0">
+                        <div class="memory-card bg-white p-6 rounded-2xl shadow-lg border border-pink-100 inline-block">
+                            <span class="text-rose-500 text-sm font-bold tracking-wider">${date}</span>
+                            <h3 class="text-xl font-bold mt-2 mb-2">${title}</h3>
+                            <p class="text-gray-600 text-sm leading-relaxed">${content}</p>
+                        </div>
+                    </div>
+                    <div class="timeline-dot w-4 h-4 bg-rose-500 rounded-full relative z-10 hidden md:block"></div>
+                    <div class="w-full md:w-1/2 md:pl-12 hidden md:block"></div>
+                `;
+                container.appendChild(newItem);
+                
+                // 动画显示新添加的项目
+                gsap.to(newItem, { opacity: 1, y: 0, duration: 0.8 });
+                alert("甜蜜瞬间已添加！❤");
+            }
+        }
+        
+        // 添加新台词
+        function addQuote() {
+            const quote = prompt("请输入甜蜜台词：");
+            const author = prompt("是谁说的？（例如：索晗 to 龚翰文）");
+            
+            if (quote && author) {
+                const container = document.getElementById('quotes-container');
+                const newCard = document.createElement('div');
+                newCard.className = 'quote-card group relative bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 cursor-pointer';
+                newCard.onclick = function() { flipCard(this); };
+                newCard.innerHTML = `
+                    <div class="absolute -top-4 -right-4 w-12 h-12 bg-rose-500 rounded-full flex items-center justify-center text-white text-2xl shadow-lg group-hover:scale-110 transition-transform">"</div>
+                    <div class="card-front">
+                        <p class="text-lg text-gray-700 leading-relaxed mb-4 font-serif">"${quote}"</p>
+                        <div class="flex items-center justify-between mt-6">
+                            <span class="text-sm text-rose-500 font-bold">—— ${author}</span>
+                            <span class="text-xs text-gray-400">点击翻转</span>
+                        </div>
+                    </div>
+                    <div class="card-back hidden absolute inset-0 bg-rose-500 rounded-2xl p-8 flex items-center justify-center text-white">
+                        <p class="text-center text-lg">珍藏的甜蜜 💕</p>
+                    </div>
+                `;
+                container.appendChild(newCard);
+                
+                gsap.from(newCard, { scale: 0.8, opacity: 0, duration: 0.5 });
+            }
+        }
+        
+        // 添加照片（示例）
+        function addPhoto() {
+            alert("在实际部署时，这里可以集成图片上传功能。现在先添加一张示例照片！");
+            const container = document.getElementById('gallery-container');
+            const newPhoto = document.createElement('div');
+            newPhoto.className = 'polaroid aspect-square bg-gray-100 rounded-lg overflow-hidden cursor-pointer';
+            newPhoto.onclick = function() { enlargeImage(this); };
+            newPhoto.innerHTML = `
+                <div class="w-full h-full bg-gradient-to-br from-green-200 to-teal-200 flex items-center justify-center text-white text-4xl">
+                    🎉
+                </div>
+                <div class="absolute bottom-2 left-0 right-0 text-center handwriting text-gray-600">新的回忆</div>
+            `;
+            container.appendChild(newPhoto);
+            gsap.from(newPhoto, { rotation: -10, opacity: 0, duration: 0.6 });
+        }
+        
+        // 图片放大
+        function enlargeImage(element) {
+            const modal = document.getElementById('imageModal');
+            const content = document.getElementById('modalContent');
+            const caption = document.getElementById('modalCaption');
+            
+            // 获取原内容
+            const inner = element.querySelector('div:first-child');
+            const text = element.querySelector('.handwriting').innerText;
+            
+            content.innerHTML = inner.innerHTML;
+            content.className = inner.className + " w-full h-96";
+            caption.innerText = text;
+            
+            modal.classList.remove('hidden');
+            gsap.to(modal.querySelector('div'), { scale: 1, duration: 0.3 });
+        }
+        
+        function closeModal() {
+            const modal = document.getElementById('imageModal');
+            gsap.to(modal.querySelector('div'), { 
+                scale: 0.95, 
+                duration: 0.2,
+                onComplete: () => modal.classList.add('hidden')
+            });
+        }
+        
+        // 爱心特效
+        function showLove() {
+            for (let i = 0; i < 10; i++) {
+                setTimeout(() => {
+                    const heart = document.createElement('div');
+                    heart.innerHTML = '❤';
+                    heart.style.position = 'fixed';
+                    heart.style.left = Math.random() * window.innerWidth + 'px';
+                    heart.style.top = window.innerHeight + 'px';
+                    heart.style.fontSize = Math.random() * 20 + 20 + 'px';
+                    heart.style.color = '#e75480';
+                    heart.style.pointerEvents = 'none';
+                    heart.style.zIndex = '9999';
+                    document.body.appendChild(heart);
+                    
+                    gsap.to(heart, {
+                        y: -window.innerHeight - 100,
+                        x: (Math.random() - 0.5) * 200,
+                        rotation: Math.random() * 360,
+                        opacity: 0,
+                        duration: 3,
+                        ease: "power1.out",
+                        onComplete: () => heart.remove()
+                    });
+                }, i * 200);
+            }
+        }
+        
+        // 鼠标跟随效果（可选）
+        document.addEventListener('mousemove', (e) => {
+            const cursor = document.querySelector('.cursor');
+            if (!cursor) {
+                const newCursor = document.createElement('div');
+                newCursor.className = 'cursor fixed w-4 h-4 bg-rose-500/30 rounded-full pointer-events-none z-50 transition-transform duration-100';
+                document.body.appendChild(newCursor);
+            }
+            const actualCursor = document.querySelector('.cursor');
+            actualCursor.style.left = e.clientX - 8 + 'px';
+            actualCursor.style.top = e.clientY - 8 + 'px';
+        });
+    </script>
+</body>
+</html>
